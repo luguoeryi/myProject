@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/15.6.1/react.js"></script>
+    <script src="../lib/15.6.1/react-dom.js"></script>
+    <script src="../lib/15.6.1/babel.min.js"></script>
+    <script type="text/babel">
+        class Element extends React.Component {
+            constructor (props) {
+                super(props);
+                this.state = {date: new Date()};
+            }
+
+            componentDidMount () {
+                this.timerID = setInterval( () => {
+                    this.tick();
+                }, 1000)
+            }
+
+            componentWillUnMount () {
+                clearInterval(this.timerID);
+            }
+
+            tick () {
+                this.setState({
+                    date: new Date()
+                });
+            }
+
+            handleClick () {
+                console.log( this )
+                console.log('you click me');
+            }
+
+            render () {
+                return (
+                    <div>
+                        <h1 onClick={this.handleClick.bind(this)}>Hello, World!</h1>
+                        <h2>It is { this.state.date.toLocaleTimeString() }.</h2>
+                    </div>
+                )
+            }
+        };
+
+        ReactDOM.render (
+            <Element />,
+            document.getElementById('root')
+        );
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>
