@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组合 vs 继承</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/15.6.1/react.js"></script>
+    <script src="../lib/15.6.1/react-dom.js"></script>
+    <script src="../lib/15.6.1/babel.min.js"></script>
+    <script type="text/babel">
+        function SplitPane (props) {
+            return (
+                <div className="SplitPane">
+                    <div className="SplitPane-left">
+                        {props.left}
+                    </div>
+                    <div className="SplitPane-right">
+                        {props.right}
+                    </div>
+                </div>
+            )
+        }
+
+        function Contacts () {
+            return (
+                <h1>Contacts</h1>
+            )
+        }
+
+        function Chat () {
+            return (
+                <p>15014096382</p>
+            )
+        }
+
+        function App () {
+            return (
+                <SplitPane
+                left={
+                    <Contacts />
+                }
+                right={
+                    <Chat />
+                } />
+            )
+        }
+
+        ReactDOM.render (
+            <App />,
+            document.getElementById('root')
+        )
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>

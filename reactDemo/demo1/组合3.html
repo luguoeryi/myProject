@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>特殊实例</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="../lib/15.6.1/react.js"></script>
+    <script src="../lib/15.6.1/react-dom.js"></script>
+    <script src="../lib/15.6.1/babel.min.js"></script>
+    <script type="text/babel">
+        function FancyBorder (props) {
+            return (
+                <div className={'FancyBorder FancyBorder-' + props.color}>
+                    {props.children}
+                </div>
+            )
+        }
+        
+        function Dialog(props) {
+            return (
+                <FancyBorder color="blue">
+                    <h1 className="Dialog-title">
+                        {props.title}
+                    </h1>
+                    <p className="Dialog-message">
+                        {props.message}
+                    </p>
+                </FancyBorder>
+            )
+        }
+
+        function WelcomeDialog() {
+            return (
+                <Dialog title="Welcome" message="Thank you for visiting our spacecraft!" />
+            )
+        }
+
+        ReactDOM.render (
+            <WelcomeDialog />,
+            document.getElementById('root')
+        )
+    </script>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+</html>
