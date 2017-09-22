@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>高德 plugin</title>
+    <style type="text/css">
+     body,html,#container{
+       height: 100%;
+       margin: 0px
+     }
+     .panel {
+       background-color: #ddf;
+       color: #333;
+       border: 1px solid silver;
+       box-shadow: 3px 4px 3px 0px silver;
+       position: absolute;
+       top: 10px;
+       right: 10px;
+       border-radius: 5px;
+       overflow: hidden;
+       line-height: 20px;
+     }
+     #input{
+       width: 250px;
+       height: 25px;
+       border: 0;
+     }
+   </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="http://webapi.amap.com/maps?v=1.4.0&amp;key=624c55ba8f6566d8988004c2205f6310&callback=init"></script>
+    <script>
+        // 624c55ba8f6566d8988004c2205f6310
+        function init(){
+            var map = new AMap.Map('container', { //创建地图
+                center: [116.026249, 25.886483],
+                zoom: 15
+            });
+
+            map.plugin(['AMap.ToolBar','AMap.Scale','AMap.OverView','AMap.Geolocation','AMap.MapType'],
+                function(){
+                    map.addControl(new AMap.ToolBar());
+
+                    map.addControl(new AMap.Scale());
+
+                    map.addControl(new AMap.OverView({isOpen:true}));
+
+                    map.addControl(new AMap.Geolocation());
+
+                    map.addControl(new AMap.MapType());
+            });
+        }
+
+        // ToolBar 工具条
+        // Scale  比例尺
+        // Geolocation  定位
+        // OverView 鹰眼
+        // MapType  类别切换
+    </script>
+</body>
+</html>

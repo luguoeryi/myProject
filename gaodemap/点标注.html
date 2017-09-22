@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style type="text/css">
+      body,html,#container{
+        height: 100%;
+        margin: 0px;
+        font:12px Arial;
+      }
+      .taiwan{
+      	border: solid 1px red;
+      	color: red;
+      	float: left;
+      	width: 50px;
+      	background-color: rgba(255,0,0,0.1)
+      }
+    </style>
+    <title>Marker example</title>
+  </head>
+  <body>
+   <div id="container" tabindex="0"></div>
+   <script src="https://webapi.amap.com/js/marker.js"></script>
+   <script src="https://webapi.amap.com/maps?v=1.4.0&key=624c55ba8f6566d8988004c2205f6310"></script>
+   <script type="text/javascript">
+
+        var map = new AMap.Map('container',{resizeEnable: true,zoom:4});
+        var markers = []; //province见Demo引用的JS文件
+        console.log(provinces);
+        for (var i = 0; i < provinces.length; i += 1) {
+    			var marker;
+    			if (provinces[i].type === 0) {
+    				var icon = new AMap.Icon({
+    					image: 'http://m.jianzaogong.com/assets/img/icon.ico', // https://vdata.amap.com/icons/b18/1/2.png
+    					size: new AMap.Size(64, 64)
+    				});
+    				marker = new AMap.Marker({
+    					icon: icon,
+    					position: provinces[i].center.split(','),
+    					offset: new AMap.Pixel( -32, -30),
+    					zIndex: 101,
+    					title: provinces[i].name,
+    					map: map
+    				});
+    			} else {
+                    if (provinces[i].type === 2) {
+              				var content= "<div class = 'taiwan'>宝岛台湾</div>";
+              				baodao = new AMap.Marker({
+              					content: content,
+              					position: provinces[i].center.split(','),
+              					title: provinces[i].name,
+              					offset: new AMap.Pixel(0,0),
+              					map: map
+              				});
+                    }else {
+        				marker = new AMap.Marker({
+        					position: provinces[i].center.split(','),
+        					title: provinces[i].name,
+        					map: map
+        				});
+                    }
+    			}
+    			markers.push(marker);
+    		}
+			  map.setFitView();
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>高德 覆盖物</title>
+    <style type="text/css">
+     body,html,#container{
+       height: 100%;
+       margin: 0px
+     }
+     .panel {
+       background-color: #ddf;
+       color: #333;
+       border: 1px solid silver;
+       box-shadow: 3px 4px 3px 0px silver;
+       position: absolute;
+       top: 10px;
+       right: 10px;
+       border-radius: 5px;
+       overflow: hidden;
+       line-height: 20px;
+     }
+     #input{
+       width: 250px;
+       height: 25px;
+       border: 0;
+     }
+   </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="http://webapi.amap.com/maps?v=1.4.0&amp;key=624c55ba8f6566d8988004c2205f6310&callback=init"></script>
+    <script>
+        // 624c55ba8f6566d8988004c2205f6310
+        function init(){
+            var map = new AMap.Map('container', { //创建地图
+                center: [116.026249, 25.886483],
+                zoom: 15
+            });
+
+            var marker = new AMap.Marker({ //点标记
+                position: [116.480983, 39.989628]
+            });
+            marker.setMap(map);
+            var circle = new AMap.Circle({ //圆
+                center: [116.480983, 39.989628],
+                radius: 100,
+                fillOpacity:0.2,
+                strokeWeight:1
+            })
+            circle.setMap(map);
+            map.setFitView()
+            var info = new AMap.InfoWindow({ //信息窗体
+                content:"信息窗体<br>这里是方恒科技大厦",
+                offset:new AMap.Pixel(0,-28)
+            })
+            info.open(map,marker.getPosition())
+        }
+
+        // 点标记    Marker
+        // 信息窗体    InfoWindow
+        // 圆    Circle
+        //多边形    Polygon
+        // 折线    Polyline
+        // 右键菜单    ContextMenu
+    </script>
+</body>
+</html>

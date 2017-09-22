@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>高德 3d</title>
+    <style>
+    body,html,#container{
+      height: 100%;
+      margin: 0px
+    }
+    .panel {
+      background-color: #ddf;
+      color: #333;
+      border: 1px solid silver;
+      box-shadow: 3px 4px 3px 0px silver;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+      line-height: 20px;
+    }
+    #input{
+      width: 250px;
+      height: 25px;
+      border: 0;
+    }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <script src="http://webapi.amap.com/maps?v=1.4.0&amp;key=624c55ba8f6566d8988004c2205f6310&callback=init"></script>
+    <script>
+        function init () {
+            var map = new AMap.Map('container', {
+                pitch:75, //俯仰角  0度－83度
+                viewMode:'3D', //3d
+                zoom: 15,
+                expandZoomRange:true,
+                zooms:[3, 18],
+                center: [116.026249, 25.886483]
+            });
+
+            map.plugin(["AMap.ToolBar"], function () { //地图放大插件
+                map.addControl(new AMap.ToolBar());
+            });
+        }
+    </script>
+</body>
+</html>
