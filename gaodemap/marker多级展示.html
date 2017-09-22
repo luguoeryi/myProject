@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style type="text/css">
+      body,html,#container{
+        height: 100%;
+        margin: 0px;
+        font:12px Arial;
+      }
+      .circle{
+      	border-radius: 6px;
+      	border: solid 1px silver;
+       	width: 35px;
+       	height: 16px;
+       	padding: 3px;
+       	text-align: center;
+      	line-height: 18px;
+      	max-width: 50px;
+        color:white;
+      }
+    </style>
+    <title>Marker example</title>
+  </head>
+  <body>
+   <div id="container" tabindex="0"></div>
+   <script src="https://webapi.amap.com/js/marker2.js"></script>
+   <script src="https://webapi.amap.com/maps?v=1.4.0&key=624c55ba8f6566d8988004c2205f6310"></script>
+   <script type="text/javascript">
+   		var map = new AMap.Map('container', {
+            resizeEnable: true,
+   			zoom: 5,
+   			zooms:[4,18],
+   			center: [106.485352, 34.603692]
+   		});
+
+   		var createMarker = function(data,hide) {
+   			var div = document.createElement('div');
+   			div.className = 'circle';
+   			var r = Math.floor(data.count / 1024);
+   			div.style.backgroundColor = hide?'#393':'#09f';
+   			div.innerHTML = data.count || 0;
+   			var marker = new AMap.Marker({
+   				content: div,
+   				title:data.name,
+   				position: data.center.split(','),
+   				offset: new AMap.Pixel(-24, 5),
+   				zIndex: data.count
+   			});
+   			marker.subMarkers = [];
+   			if(data.name==='北京市'||data.name==='河南省'){
+   				marker.setLabel({content:'&larr;请点击',offset:new AMap.Pixel(45,0)})
+                  map.setCenter(marker.getPosition());
+   			}
+   			if(!hide){
+   				marker.setMap(map)
+   			}
+   			if(data.subDistricts&&data.subDistricts.length){
+   				for(var i = 0 ; i<data.subDistricts.length;i+=1){
+   					marker.subMarkers.push(createMarker(data.subDistricts[i],true));
+   				}
+   			}
+   			return marker;
+   		}
+   		var _onZoomEnd = function(e) {
+   			if (map.getZoom() < 6) {
+   				for (var i = 0; i < markers.length; i += 1) {
+   					map.remove(markers[i].subMarkers)
+   				}
+   				map.add(markers);
+   			}
+   		}
+   		var _onClick = function(e) {
+   			if(e.target.subMarkers.length){
+   				map.add(e.target.subMarkers);
+   				map.setFitView(e.target.subMarkers);
+   				map.remove(markers)
+   			}
+   		}
+   		var markers = []; //province见Demo引用的JS文件
+   		for (var i = 0; i < provinces.length; i += 1) {
+   			var marker = createMarker(provinces[i]);
+   			markers.push(marker);
+   			AMap.event.addListener(marker, 'click', _onClick);
+   		}
+   		//map.setFitView();
+   		AMap.event.addListener(map, 'zoomend', _onZoomEnd);
+
+    </script>
+    <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
+  </body>
+</html>
