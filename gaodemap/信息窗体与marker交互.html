@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>系统默认信息窗体展示</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main.css"/>
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.0&key=624c55ba8f6566d8988004c2205f6310"></script>
+    <style type="text/css">
+        body {
+            font-size: 12px;
+        }
+        .amap-info-close{
+          top:10px;
+        }
+    </style>
+</head>
+<body>
+<div id="mapContainer"></div>
+<script type="text/javascript">
+    //初始化地图对象，加载地图
+    var map = new AMap.Map("mapContainer", {
+        resizeEnable: true,
+        zoom: 13
+    });
+     var lnglats=[
+         [116.368904,39.923423],
+         [116.382122,39.921176],
+         [116.387271,39.922501],
+         [116.398258,39.914600]
+     ];
+    var infoWindow = new AMap.InfoWindow({offset:new AMap.Pixel(0,-30)});
+    for(var i= 0,marker;i<lnglats.length;i++){
+          var marker=new AMap.Marker({
+              position:lnglats[i],
+              map:map
+          });
+        marker.content='我是第'+(i+1)+'个Marker';
+        marker.on('click',markerClick);
+        marker.emit('click',{target:marker});
+    }
+    function markerClick(e){
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map, e.target.getPosition());
+    }
+    map.setFitView();
+</script>
+ <script type="text/javascript" src="https://webapi.amap.com/demos/js/liteToolbar.js"></script>
+
+</body>
+</html>
