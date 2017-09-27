@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZOiRTF6bXHGxDT4FoK0EdyhZ2qxz2dAK"></script>
+	<title>设置地图最大、最小级别</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	//定义一些常量
+	var x_PI = 3.14159265358979324 * 3000.0 / 180.0;
+	var PI = 3.1415926535897932384626;
+	var a = 6378245.0;
+	var ee = 0.00669342162296594323;
+
+
+
+	// 百度地图API功能
+    var x = 116.026249;
+    var y = 25.886483;
+	var map = new BMap.Map("allmap"); // 创建Map实例,设置地图允许的最小/大级别
+    var getResult = gcj02tobd09(x, y);
+    var point = new BMap.Point(getResult[0], getResult[1]);
+		map.centerAndZoom(point, 15);
+    var marker = new BMap.Marker(point);
+    	map.addOverlay(marker);
+		map.enableScrollWheelZoom(true);
+
+
+    function gcj02tobd09(lng, lat) { //火星坐标转百度坐标
+		var z = Math.sqrt(lng * lng + lat * lat) + 0.00002 * Math.sin(lat * x_PI);
+		var theta = Math.atan2(lat, lng) + 0.000003 * Math.cos(lng * x_PI);
+		var bd_lng = z * Math.cos(theta) + 0.0065;
+		var bd_lat = z * Math.sin(theta) + 0.006;
+		return [bd_lng, bd_lat]
+    }
+</script>

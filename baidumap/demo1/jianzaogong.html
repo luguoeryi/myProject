@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	    body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<title>地图展示</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZOiRTF6bXHGxDT4FoK0EdyhZ2qxz2dAK&callback=init"></script>
+<script type="text/javascript">
+	var data = [
+		{
+			position: [114.060685,22.53127], //福田区
+			title: '福田区'
+		},{
+			position: [114.140023,22.555837], //罗湖区
+			title: '罗湖区'
+		},{
+			position: [114.244083,22.565984], //盐田区
+			title: '盐田区'
+		},{
+			position: [113.936503,22.539816], //南山区
+			title: '南山区'
+		},{
+			position: [113.891085,22.563314], //宝安区
+			title: '宝安区'
+		},{
+			position: [114.046312,22.759148], //龙华区
+			title: '龙华区'
+		}
+	]
+
+    function init () {
+    	// 百度地图API功能
+		var initPoint = data[0].position;	//初始化地图坐标
+
+    	var map = new BMap.Map("allmap");    // 创建Map实例
+
+		var point = new BMap.Point(initPoint[0], initPoint[1]); //根据经纬度创建地理坐标
+
+    		map.centerAndZoom(point, 12);  // 初始化地图,设置中心点坐标和地图级别
+
+		for (var i=0;i<data.length;i++) {
+			var _nowP = data[i].position;
+			var _point = new BMap.Point(_nowP[0], _nowP[1]);
+
+			var myIcon = new BMap.Icon('http://jianzaogong.com/favicon.ico', new BMap.Size(64, 64)); //创建自定义图标
+
+			addMarker(map, _point, myIcon, data[i].title);	//添加marker
+		}
+    	//map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+    }
+
+	function addMarker (map, point, icon, title) {
+		var marker = new BMap.Marker(point, {icon: icon});	//创建标注
+			marker.addEventListener('click', function (data) {
+				var p = marker.getPosition();	//获取当前marker的位置
+				console.log({
+					lng: p.lng,
+					lat: p.lat,
+					title: title
+				});
+			})
+			map.addOverlay(marker);
+	}
+</script>
