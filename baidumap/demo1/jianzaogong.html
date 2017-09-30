@@ -18,7 +18,7 @@
 <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZOiRTF6bXHGxDT4FoK0EdyhZ2qxz2dAK"></script>
 <script type="text/javascript">
 
-	function ComplexCustomOverlay(point, text, mouseoverText, data){
+	function ComplexCustomOverlay (point, text, mouseoverText, data){
       this._point = point;
       this._text = text;
       this._overText = mouseoverText;
@@ -42,7 +42,8 @@
 	  div.style.fontSize = "12px";
 	  div.style.textAlign = "center";
 	  div.style.borderRadius = "50%";
-      div.style.borderColor = "transparent";
+	  div.style.borderColor = "transparent";
+      div.style.cursor = "pointer";
 	  var _inner = '<p style="font-size: 15px;">'+ this._text +'</p><p style="margin-top:-30px;">12个项目</p>';
       div.innerHTML = _inner;
 
@@ -52,6 +53,16 @@
 		    map.setZoom(15);
 		    map.panTo(_this._point);
 	  		map.clearOverlays();
+
+			for (var i=0;i<data.length;i++) {
+				var nowChildre = data[i].children;
+				for (var j=0;j<nowChildre.length;j++) {
+					var _nowP = nowChildre[i].position;
+					var _point = new BMap.Point(_nowP[0], _nowP[1]);
+					var title = nowChildre[i].title;
+				}
+			}
+
 			console.log(_this._point);
 	  });
 
@@ -213,6 +224,11 @@
 			});
 
 		    map.addOverlay(myCompOverlay);
+	}
+
+	function addMarker2 (map, point, icon, title) {
+		var txt = title, mouseoverTxt = title + 'over';
+
 	}
 
 
