@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	    body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+        .initMarker {
+            position: absolute;
+            background: #EE5D5B;
+            color: #fff;
+            height: 94px;
+            width: 94px;
+            line-height: 40px;
+            MozUserSelect: none;
+            font-size: 12px;
+            text-align: center;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+		.initMarker:hover {
+			background: gold !important;
+		}
+        .childMarker {
+            position: absolute;
+            padding: 0 6px;
+            display: inline-block;
+            background: #39ac6a;
+            border-radius: 2px;
+            border: 1px solid #39ac6a;
+            min-width: 60px;
+            width: auto;
+            height: 28px;
+            line-height: 28px;
+            MozUserSelect: none;
+            font-size: 8px;
+            text-align: center;
+            color: #fff;
+        }
+        .childMarker:hover {
+            background: #EE5D5B !important;
+			border: 1px solid #EE5D5B;
+        }
+	</style>
+	<title>地图展示</title>
+    <script type="text/javascript">
+        var data = [
+		{
+			position: [114.060685,22.53127], //福田区
+			title: '福田区',
+			children: [
+				{
+					title: '金帝翠园',
+					position: [114.060357,22.530006]
+				},
+				{
+					title: '丽阳天下名苑',
+					position: [114.057392,22.530978]
+				},
+				{
+					title: '皇悦酒店',
+					position: [114.056481,22.52827]
+				},
+				{
+					title: '新新家园',
+					position: [114.056481,22.52827]
+				},
+				{
+					title: '益田名苑',
+					position: [114.056481,22.52827]
+				}
+			]
+		},{
+			position: [114.140023,22.555837], //罗湖区
+			title: '罗湖区',
+			children: [
+				{
+					title: '名都大厦',
+					position: [114.136426,22.55582]
+				},
+				{
+					title: '海丽大厦',
+					position: [114.138142,22.556145]
+				}
+			]
+		},{
+			position: [114.244083,22.565984], //盐田区
+			title: '盐田区',
+			children: [
+				{
+					title: '翠景花园',
+					position: [114.244018,22.565324]
+				},
+				{
+					title: '海荣居',
+					position: [114.244804,22.565853]
+				},
+				{
+					title: '暗径新村',
+					position: [114.242833,22.564398]
+				}
+			]
+		},{
+			position: [113.936503,22.539816], //南山区
+			title: '南山区',
+			children: [
+				{
+					title: '南山区政府',
+					position: [113.937186,22.538784]
+				},
+				{
+					title: '南苑学院',
+					position: [113.939714,22.539526]
+				}
+			]
+		},{
+			position: [113.891085,22.563314], //宝安区
+			title: '宝安区',
+			children: [
+				{
+					title: '宝安区政府',
+					position: [113.89022,22.561794]
+				},
+				{
+					title: '保安体育场',
+					position: [113.887364,22.563888]
+				}
+			]
+		},{
+			position: [114.046312,22.759148], //龙华区
+			title: '龙华区',
+			children: [
+				{
+					title: '万象点',
+					position: [114.04455,22.764258]
+				},
+				{
+					title: '万象百货',
+					position: [114.045776,22.762692]
+				},
+				{
+					title: '拉拉',
+					position: [114.049558,22.774372]
+				}
+			]
+		}
+	]
+    </script>
+</head>
+<body>
+<div id="allmap"></div>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZOiRTF6bXHGxDT4FoK0EdyhZ2qxz2dAK"></script>
+<script type="text/javascript">
+    
+
+    function ComplexCustomOverlay (point, text, json, isParent) {
+        this.point = point;
+        this.text = text;
+        this.json = json;
+        this.isParent = isParent;
+    } 
+
+    ComplexCustomOverlay.prototype = new BMap.Overlay();
+
+    ComplexCustomOverlay.prototype.initialize = function (map) {
+            var _this = this;
+
+                this.map = map;
+
+                if ( this.isParent ) {
+                    var oBox = this.oBox = document.createElement('div');
+
+                        oBox.className = 'initMarker';
+
+                        oBox.style.zIndex = BMap.Overlay.getZIndex(this.point.lat);
+
+                    var childHtml = '<p style="font-size: 15px;">'+ this.text +'</p><p style="margin-top:-30px;">'+ this.json.length +'个项目</p>';
+
+                        oBox.innerHTML = childHtml;
+
+
+                        oBox.addEventListener('click', function () {
+                            createMarkerChild(map, _this.point);
+                        });
+
+                        
+                        map.getPanes().labelPane.appendChild(oBox);
+
+                        return oBox;
+                }else {
+                    var oChild = this.oChild = document.createElement('div');
+
+                        oChild.className = 'childMarker';
+
+                        oChild.style.zIndex = BMap.Overlay.getZIndex(this.point.lat);
+
+                        oChild.innerHTML = this.text;
+
+                        map.getPanes().labelPane.appendChild(oChild);
+
+                        return oChild;
+                }
+        
+    }
+
+    ComplexCustomOverlay.prototype.draw = function () {
+        var pixel = this.map.pointToOverlayPixel(this.point);
+
+        if( this.isParent ){
+            this.oBox.style.left = pixel.x + "px";
+            this.oBox.style.top  = pixel.y + "px";
+        }else {
+            this.oChild.style.left = pixel.x + "px";
+            this.oChild.style.top  = pixel.y + "px";
+        }
+    }
+
+    // 百度地图API功能
+    var initPoint = data[0].position;	//初始化地图坐标
+
+    var map = new BMap.Map("allmap");    // 创建Map实例
+
+    var point = new BMap.Point(initPoint[0], initPoint[1]); //根据经纬度创建地理坐标
+
+        map.centerAndZoom(point, 12);  // 初始化地图,设置中心点坐标和地图级别
+
+        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+        createMarker(map); //创建marker
+
+    function createMarker (map) {
+
+		map.smallZOOM = false;
+
+		map.clearOverlays();
+
+        for (var i=0;i<data.length;i++) {
+            var nowPt = data[i].position;
+            var point = new BMap.Point(nowPt[0], nowPt[1]);
+            
+            var title = data[i].title;
+
+		    var myCompOverlay = new ComplexCustomOverlay(point, title, {
+				length: data[i].children.length
+			}, true);
+
+		    map.addOverlay(myCompOverlay);
+
+        }
+    }
+
+	function createMarkerChild (map, point) {
+
+		map.smallZOOM = true;
+
+		map.setZoom(15);
+		if( point ){
+			map.panTo(point);
+		}
+		map.clearOverlays();
+		
+		for (var i=0;i<data.length;i++) {
+			var nowChildren = data[i].children;
+			for (var j=0;j<nowChildren.length;j++) {
+				var _nowP = nowChildren[j].position;
+				var _point = new BMap.Point(_nowP[0], _nowP[1]);
+				var title = nowChildren[j].title;
+
+				var myCompOverlay = new ComplexCustomOverlay(_point, title, {}, false);
+
+				map.addOverlay(myCompOverlay);
+			}
+		}
+	}
+
+	function scrollFunc () {
+		if (map) {
+			var zoom = map.getZoom();
+			if ( zoom <= 13 ) {
+				if ( map.smallZOOM ) {
+					createMarker(map);
+				}
+			}else {
+				if ( !map.smallZOOM ) {
+					createMarkerChild(map);
+					console.log( map.getOverlays() );
+				}
+			}
+		}
+	}
+
+	/*注册事件*/
+	if(document.addEventListener){
+
+		document.addEventListener('DOMMouseScroll', scrollFunc, false);
+
+	}//W3C
+		window.onmousewheel=document.onmousewheel= scrollFunc;//IE/Opera/Chrome
+</script>
+</body>
+</html>
