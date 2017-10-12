@@ -19,13 +19,22 @@
     <div id="container"></div>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZOiRTF6bXHGxDT4FoK0EdyhZ2qxz2dAK"></script>
     <script type="text/javascript">
-        function ComplexCustomOverlay () {
-
+        function ComplexCustomOverlay (opt) {
+            this.defaults = {
+                markerClass: 'markerClass',
+                text: '',
+                overText: ''
+            };
+            Object.assign(this.defaults, opt);
         }
 
         ComplexCustomOverlay.prototype = new BMap.Overlay();
 
         ComplexCustomOverlay.prototype.initialize = function (map) {
+
+        }
+
+        ComplexCustomOverlay.prototype.CreateDom = function () {
 
         }
 
