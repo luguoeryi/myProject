@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+		body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZOiRTF6bXHGxDT4FoK0EdyhZ2qxz2dAK"></script>
+	<title>设置地图最大、最小级别</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+	// 百度地图API功能
+    // 创建Map实例,构造底图时关闭底图可点功能
+    var map = new BMap.Map("allmap", {enableMapClick:false});
+    // 初始化地图,设置中心点坐标和地图级别
+    map.centerAndZoom(new BMap.Point(113.394818, 23.408004), 5);
+
+    map.enableScrollWheelZoom(true);
+
+    //先初始化一个地图，比如城市为"广州":
+    var areas = {"新疆":"green","四川省":"red","江西省":"black","河北省":"gold"};
+    // var areas = {"河北省":"gold"};
+    //获取行政区域的边界
+    var bdary = new BMap.Boundary();
+    //遍历areas
+    for (let key in areas) {
+        let val = areas[key]
+        bdary.get(key, function(rs){ //获取行政区域
+            let arr = rs.boundaries; // 多个地理区间
+            //建立多边形覆盖物
+            var polygon = new BMap.Polygon(arr[0], {
+            strokeWeight: 2, //设置多边形边线线粗
+            strokeStyle: "dashed", //设置多边形边线样式为实线或虚线，取值 solid 或 dashed
+            strokeColor: val, //设置多边形边线颜色
+            fillColor: val //设置多边形填充颜色
+            });
+
+            polygon.addEventListener('mouseover', function (e) {
+                console.log('over')
+                this.hide()
+            })
+            polygon.addEventListener('mouseout', function (e) {
+                console.log('out')
+            })
+            map.addOverlay(polygon); //添加覆盖物
+
+        });
+    }
+</script>
