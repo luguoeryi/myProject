@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>start webSocket</title>
+</head>
+<body>
+    <input type="text" id="text" />
+    <input type="button" value="提交" id="button" />
+    <p id="content"></p>
+
+    <script type="text/javascript">
+        // var webSocket = new WebSocket('ws://echo.websocket.org/');
+        var webSocket = new WebSocket('ws://localhost:8001');
+        webSocket.onopen = function () {
+            console.log('open');
+        }
+
+        webSocket.onClose = function () {
+            console.log('close')
+        }
+
+        webSocket.onmessage = function (e) {
+            console.log(e);
+            document.getElementById('content').innerHTML = e.data;
+        }
+
+        document.getElementById('button').onclick = function () {
+            var txt = document.getElementById('text').value;
+            webSocket.send(txt);
+        }
+    </script>
+</body>
+</html>
