@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # /node_modules/* and /bower_components/* ignored by default
 
 # Ignore built files except build/index.js
 build/*
 !build/index.js
+=======
+node_modules
+>>>>>>> 1864f229bb328ff1c8e7afc035c397dd771ef6d6
