@@ -1,0 +1,11 @@
+{
+    "presets": [
+        ["babel-preset-env", { // babel-perset 只针对语法
+            "targets": {
+                "browsers": ["> 1%", "last 2 versions"]
+                // chrome: '52'
+            }
+        }]
+    ],
+    "plugins": ["babel-plugin-transform-runtime"]
+}
