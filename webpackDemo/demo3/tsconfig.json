@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "commonjs", // es6 es7
+        "target": "es5", // 编译程度
+        "allowJs": true, // 允许出现js
+        "typeRoots": [
+            "./node_modules/@type", // npm 安装 的声明文件地址
+            "./typings/modules" // typing 安装的声明文件地址
+        ]
+    },
+    "include": [
+        "./src/*" // 需要编译的文件路径
+    ],
+    "exclude": [
+        "./node_modules" // 排除编译的文件
+    ]
+}
